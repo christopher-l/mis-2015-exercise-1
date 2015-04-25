@@ -62,7 +62,51 @@ public class AnotherBrokenActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+    public class Fetcher implements Runnable {
+
+        String url;
+
+        public Fetcher(String theURL) {
+            url = theURL;
+        }
+
+        public String fetch() throws IOException{
+            HttpClient client = new DefaultHttpClient();
+            HttpResponse response = client.execute(new HttpGet("http://lmgtfy.com/?q=android+ansync+task"));
+            StatusLine status = response.getStatusLine();
+            if (status.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+                response.getEntity().writeTo(outStream);
+                return outStream.toString();
+            }else {
+                //Well, this didn't work.
+                response.getEntity().getContent().close();
+                throw new IOException(status.getReasonPhrase());
+            }
+        }
+
+        public void run() {
+            String response = "";
+            try {
+                response = fetch();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            final String finalResponse = response;
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    textView.setText(finalResponse);
+                }
+            });
+        }
+    }
+
     public void fetchHTML(View view) throws IOException {
+
+        (new Thread(new Fetcher(urlText.toString()))).start();
 
         //According to the exercise, you will need to add a button and an EditText first.
         //Then, use this function to call your http requests
