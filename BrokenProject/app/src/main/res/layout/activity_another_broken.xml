@@ -12,6 +12,7 @@
         android:id="@+id/edittext"
         android:hint="Enter URL here"
         android:layout_centerHorizontal="true"
+        android:text="http://www.uni-weimar.de"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -27,6 +28,7 @@
 
     <TextView
         android:id="@+id/brokenTextView"
+        android:layout_below="@+id/connectButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="If you see this, you maybe fixed a bug! Or two."

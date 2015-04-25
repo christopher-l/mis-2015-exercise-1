@@ -1,6 +1,7 @@
 package mmbuw.com.brokenproject;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -74,7 +76,7 @@ public class AnotherBrokenActivity extends Activity {
 
         public String fetch() throws IOException{
             HttpClient client = new DefaultHttpClient();
-            HttpResponse response = client.execute(new HttpGet("http://lmgtfy.com/?q=android+ansync+task"));
+            HttpResponse response = client.execute(new HttpGet(url));
             StatusLine status = response.getStatusLine();
             if (status.getStatusCode() == HttpStatus.SC_OK){
                 ByteArrayOutputStream outStream = new ByteArrayOutputStream();
@@ -88,53 +90,39 @@ public class AnotherBrokenActivity extends Activity {
         }
 
         public void run() {
-            String response = "";
+            Boolean success = false;
+            String response;
+
             try {
                 response = fetch();
+                success = true;
             } catch (IOException e) {
-                e.printStackTrace();
+                response = e.getMessage();
+            } catch (Exception e) {
+                response = "Unknown error. Did you forget to put http:// in front of the address?";
             }
+
+            final Boolean finalSuccess = success;
             final String finalResponse = response;
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    textView.setText(finalResponse);
+                    if (finalSuccess) {
+                        textView.setText(finalResponse);
+                    } else {
+                        Context context = getApplicationContext();
+                        int duration = Toast.LENGTH_LONG;
+                        Toast toast = Toast.makeText(context, finalResponse, duration);
+                        toast.show();
+                    }
                 }
             });
         }
     }
 
+
     public void fetchHTML(View view) throws IOException {
-
-        (new Thread(new Fetcher(urlText.toString()))).start();
-
-        //According to the exercise, you will need to add a button and an EditText first.
-        //Then, use this function to call your http requests
-        //Following hints:
-        //Android might not enjoy if you do Networking on the main thread, but who am I to judge?
-        //An app might not be allowed to access the internet without the right (*hinthint*) permissions
-        //Below, you find a staring point for your HTTP Requests - this code is in the wrong place and lacks the allowance to do what it wants
-        //It will crash if you just un-comment it.
-
-        /*
-        Beginning of helper code for HTTP Request.
-
-        HttpClient client = new DefaultHttpClient();
-        HttpResponse response = client.execute(new HttpGet("http://lmgtfy.com/?q=android+ansync+task"));
-        StatusLine status = response.getStatusLine();
-        if (status.getStatusCode() == HttpStatus.SC_OK){
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            response.getEntity().writeTo(outStream);
-            String responseAsString = outStream.toString();
-             System.out.println("Response string: "+responseAsString);
-        }else {
-            //Well, this didn't work.
-            response.getEntity().getContent().close();
-            throw new IOException(status.getReasonPhrase());
-        }
-
-          End of helper code!
-
-                  */
+        (new Thread(new Fetcher(urlText.getText().toString()))).start();
     }
 }
