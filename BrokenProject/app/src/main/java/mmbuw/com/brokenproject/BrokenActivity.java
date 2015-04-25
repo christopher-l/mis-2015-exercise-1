@@ -49,7 +49,7 @@ public class BrokenActivity extends Activity {
 
         System.out.println("If this appears in your console, you fixed a bug.");
         Intent intent = new Intent(this,AnotherBrokenActivity.class);
-        String message = "This string will be passed to the new activity";
+        String message = auntEdith.getText().toString();
         intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }

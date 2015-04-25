@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -21,6 +23,9 @@ import mmbuw.com.brokenproject.R;
 
 public class AnotherBrokenActivity extends Activity {
 
+    EditText urlText;
+    TextView textView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +36,10 @@ public class AnotherBrokenActivity extends Activity {
         //What happens here? What is this? It feels like this is wrong.
         //Maybe the weird programmer who wrote this forgot to do something?
 
+        urlText = (EditText) findViewById(R.id.edittext);
+        textView = (TextView) findViewById(R.id.brokenTextView);
+
+        textView.setText(message);
     }
 
 
