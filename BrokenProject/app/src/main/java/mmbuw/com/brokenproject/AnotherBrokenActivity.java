@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ public class AnotherBrokenActivity extends Activity {
 
     EditText urlText;
     TextView textView;
+    WebView webView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,7 @@ public class AnotherBrokenActivity extends Activity {
 
         urlText = (EditText) findViewById(R.id.edittext);
         textView = (TextView) findViewById(R.id.brokenTextView);
+        webView = (WebView) findViewById(R.id.webView);
 
         textView.setText(message);
     }
@@ -122,7 +125,13 @@ public class AnotherBrokenActivity extends Activity {
     }
 
 
-    public void fetchHTML(View view) throws IOException {
+    public void fetchHTML(View view) {
         (new Thread(new Fetcher(urlText.getText().toString()))).start();
+    }
+
+    public void renderHTML(View view) {
+        String html = textView.getText().toString();
+        textView.setText("");
+        webView.loadData(html, "text/html", null);
     }
 }

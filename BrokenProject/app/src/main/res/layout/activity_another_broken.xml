@@ -25,14 +25,30 @@
         android:text="Connect"
         android:onClick="fetchHTML" />
 
+    <Button
+        android:id="@+id/renderButton"
+        android:layout_below="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Render HTML"
+        android:onClick="renderHTML" />
+
 
     <TextView
         android:id="@+id/brokenTextView"
-        android:layout_below="@+id/connectButton"
+        android:layout_below="@+id/renderButton"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:text="If you see this, you maybe fixed a bug! Or two."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/brokenTextView"
+        />
 
 </RelativeLayout>
