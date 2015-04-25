@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 public class BrokenActivity extends Activity {
 
-    public static final String EXTRA_MESSAGE = "This was missing.";
+    public static final String EXTRA_MESSAGE = "extra_message";
     private EditText auntEdith;
 
     @Override
@@ -50,6 +50,7 @@ public class BrokenActivity extends Activity {
         System.out.println("If this appears in your console, you fixed a bug.");
         Intent intent = new Intent(this,AnotherBrokenActivity.class);
         String message = "This string will be passed to the new activity";
+        intent.putExtra(EXTRA_MESSAGE, message);
         startActivity(intent);
     }
 }
